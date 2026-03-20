@@ -1,0 +1,38 @@
+<!-- declare html doc type -->
+<!DOCTYPE html>
+
+<!-- declare language -->
+<html lang="en">
+
+<!-- declare head, Claude assisted for character encoding and viewport settings -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Keyboard - Sender</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<!-- declare body with sender box -->
+<body>
+    <h1>Quest Keyboard</h1>
+
+    <div id="sender-box">
+      <input
+        type="text"
+        id="text-input"
+        placeholder="Type something..."
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- logic behind text input -->
+    <script>
+      const input = document.getElementById('text-input');
+
+      input.addEventListener('keyup', function () {
+        const message = input.value;
+        console.log('Message:', message);
+      });
+    </script>
+</body>
+</html>
