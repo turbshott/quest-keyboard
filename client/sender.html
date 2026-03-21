@@ -25,14 +25,27 @@
       />
     </div>
 
+    <!-- include socket logic -->
+    <script src="socket.js"></script>
     <!-- logic behind text input -->
     <script>
+      // connect to websocket server
+      connect();
+      
+      // get reference to text input and listen for keyup events
       const input = document.getElementById('text-input');
 
       input.addEventListener('keyup', function () {
         const message = input.value;
-        console.log('Message:', message);
+        if (socket.readyState === WebSocket.OPEN) {
+          socket.send(message);
+          console.log('Message', message, 'sent to server');
+        } else {
+          console.log('WebSocket is not open. Ready state:', socket.readyState);
+        }
       });
+
+      // TODO: clear input on focus to prevent stale messages
     </script>
 </body>
 </html>

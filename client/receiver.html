@@ -1,0 +1,37 @@
+<!-- declare html doc type -->
+<!DOCTYPE html>
+
+<!-- declare language -->
+<html lang="en">
+
+<!-- declare head, Claude assisted for character encoding and viewport settings -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Keyboard - Receiver</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Quest Keyboard</h1>
+
+    <div id="receiver-box">
+      <p id="received-text">Waiting for messages...</p>
+    </div>
+
+    <!-- include socket logic -->
+    <script src="socket.js"></script>
+    <!-- logic to display received messages -->
+    <script>
+        const receivedText = document.getElementById('received-text');
+        connect( function(event) {
+            if (event.data === '') {
+                receivedText.textContent = '';
+            } else {
+                console.log('Message received from server:', event.data);
+                receivedText.textContent = event.data;
+            }
+        });
+    </script>
+</body>
+</html>

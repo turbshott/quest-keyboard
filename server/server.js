@@ -1,13 +1,14 @@
-// import websocket (Claude Idea)
+// import websocket, express, and http modules
 const WebSocket = require('ws');
+const express = require('express');
+const http = require('http');
 
-// create websocket server on port 8080
-const wss = new WebSocket.Server({ port: 8080 });
-
-// check server start
-wss.on('listening', function() {
-  console.log('WebSocket server running on port 8080');
-});
+// initialize express app adn server
+const app = express();
+app.use (express.static('../client'));
+console.log('Serving static files from:', require('path').resolve('../client'));
+const httpServer = http.createServer(app);
+const wss = new WebSocket.Server({ server: httpServer });
 
 // check and print server startup errors
 wss.on('error', function(error) {
@@ -51,6 +52,11 @@ wss.on('connection', function(socket) {
   socket.on('close', function() {
     console.log('A client disconnected');
   });
+});
+
+// start http server on port 8080
+httpServer.listen(8080, function() {
+  console.log('Server running on port 8080');
 });
 
 // trySend function with retry logic for sending messages to clients
