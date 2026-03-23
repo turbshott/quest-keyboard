@@ -40,6 +40,7 @@ body {
 h1 {
     font-size: 1.4rem;
     font-weight: 500;
+    text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--accent);
     text-shadow: var(--glow);
@@ -113,24 +114,23 @@ h1 {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 2.5rem 3rem;
+    padding: 1.5rem 2rem;
     width: 560px;
     max-width: 90vw;
-    min-height: 120px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: left;
+    justify-content: left;
     /* inner glow when content is displayed */
     box-shadow: inset 0 0 40px rgba(200, 210, 220, 0.04);
 }
 
 /* large, prominent display — meant to be read at a glance in VR */
 #received-text {
-    font-size: 1.8rem;
+    font-size: 1rem;
     color: var(--text);
-    text-align: center;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.03em;
     line-height: 1.4;
+    white-space: pre-wrap;
     /* dim color and style for the waiting state */
     font-style: italic;
     text-shadow: 0 0 12px rgba(200, 210, 220, 0.4);

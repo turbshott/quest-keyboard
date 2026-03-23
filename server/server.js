@@ -6,7 +6,6 @@ const http = require('http');
 // initialize express app adn server
 const app = express();
 app.use (express.static('../client'));
-console.log('Serving static files from:', require('path').resolve('../client'));
 const httpServer = http.createServer(app);
 const wss = new WebSocket.Server({ server: httpServer });
 
@@ -15,9 +14,16 @@ wss.on('error', function(error) {
   console.log('Server failed to start:', error.message);
 });
 
+// initialize variable to store last message
+let lastMessage = '';
+
 // connect new client
 wss.on('connection', function(socket) {
   console.log('A client connected');
+  // relay last message to new clients that connect after a message was sent
+  if (lastMessage) {
+    socket.send(lastMessage);
+  }
 
   // send message recieved from client
   socket.on('message', function(message) {
@@ -27,9 +33,11 @@ wss.on('connection', function(socket) {
       console.log('Received empty message — ignoring');
       return;
     }
+    // update lastMessage with the new message
+    lastMessage = message.toString();
 
     // log received message to console
-    console.log('Received:', message.toString());
+    console.log('Received:', lastMessage);
 
     // send message to all other connected clients
     // to be updated with rooms/account logic in the future
