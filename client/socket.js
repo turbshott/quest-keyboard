@@ -3,7 +3,7 @@ let socket;
 
 // websocket connect function declaration
 function connect(onMessage) {
-    socket = new WebSocket('ws://' + window.location.hostname + ':8080');
+    socket = new WebSocket('ws://' + window.location.hostname + ':8080/ws');
 
     // check for succesful connection and print in console
     socket.addEventListener('open', function() {
