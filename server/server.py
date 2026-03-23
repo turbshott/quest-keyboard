@@ -23,8 +23,8 @@ def init_db():
 
 init_db()
 
-clients = []
-last_message = None
+clients = {}
+last_message = {}
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -87,7 +87,7 @@ def index():
         return redirect(url_for("login"))
     user_agent = request.headers.get("User-Agent", "")
     if "OculusBrowser" in user_agent:
-        return app.send_static_file("receiver.html")
+        return redirect(url_for("receiver"))
     return render_template("sender.html")
 
 @app.route("/sender")
@@ -104,27 +104,33 @@ def receiver():
 
 @sock.route("/ws")
 def websocket(ws):
-    global last_message
-    clients.append(ws)
+    user_id = session.get("user_id")
+    if user_id is None:
+        ws.close()
+        return
 
-    if last_message is not None:
-        ws.send(last_message)
+    if user_id not in clients:
+        clients[user_id] = []
+    clients[user_id].append(ws)
+
+    if user_id in last_message:
+        ws.send(last_message[user_id])
 
     try:
         while True:
             message = ws.receive()
             if message is None:
                 break
-            last_message = message
-            for client in list(clients):
+            last_message[user_id] = message
+            for client in list(clients[user_id]):
                 if client is not ws:
                     try:
                         client.send(message)
                     except:
-                        clients.remove(client)
+                        clients[user_id].remove(client)
     finally:
-        if ws in clients:
-            clients.remove(ws)
+        if ws in clients.get(user_id, []):
+            clients[user_id].remove(ws)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
