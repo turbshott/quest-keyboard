@@ -1,0 +1,139 @@
+/* remove default browser spacing and set box model to include padding/border
+   in element dimensions (makes layout math predictable) */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* CSS global variables */
+:root {
+    --bg:           #090d14;        /* deep space background */
+    --surface:      #0f1623;        /* slightly lighter surface for cards */
+    --border:       #1e2d45;        /* subtle border color */
+    --accent:       #d0d8e4;        /* soft light grey */
+    --accent-dim:   #2a3040;        /* darker grey for borders */
+    --text:         #e0eaf5;        /* soft white — easier on eyes in VR */
+    --text-muted:   #4a6080;        /* secondary text */
+    --font:         'Courier New', Courier, monospace;  /* technical monospace */
+    --glow:         0 0 12px rgba(200, 210, 220, 0.25);  /* reusable glow effect */
+}
+
+/* center everything on the page both vertically and horizontally.
+   min-height: 100vh means the body fills the full viewport height */
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* subtle radial gradient adds depth — brighter at center like a light source */
+    background-image: radial-gradient(ellipse at center, #0d1a2e 0%, var(--bg) 70%);
+    }
+
+h1 {
+    font-size: 1.1rem;
+    font-weight: normal;
+    letter-spacing: 0.3em;          /* wide spacing feels technical/HUD-like */
+    text-transform: uppercase;
+    color: var(--accent);
+    text-shadow: var(--glow);
+    margin-bottom: 2rem;
+}
+
+/* The container that holds the input and clear button */
+#sender-box {
+    display: flex;
+    gap: 0.75rem;                   /* space between input and button */
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    width: 480px;
+    max-width: 90vw;                /* responsive — never overflows on small screens */
+}
+
+/* text input */
+#text-input {
+    flex: 1;                        /* takes up all available space in the row */
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 1.1rem;
+    padding: 0.4rem 0;
+    outline: none;
+    caret-color: var(--accent);     /* cursor color matches accent */
+}
+
+/* glow on the underline when the input is focused */
+#text-input:focus {
+    border-bottom-color: var(--accent);
+    box-shadow: 0 2px 0 0 var(--accent-dim);
+}
+
+/* placeholder text style */
+#text-input::placeholder {
+    color: var(--text-muted);
+}
+
+/* clear button */
+#clear-button {
+    background: transparent;
+    border: 1px solid var(--accent-dim);
+    border-radius: 4px;
+    color: var(--text-muted);
+    font-family: var(--font);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+    transition: all 0.15s ease;    /* smooth hover transition */
+}
+
+#clear-button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: var(--glow);
+}
+
+/* the display area on the receiver page */
+#receiver-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2.5rem 3rem;
+    width: 560px;
+    max-width: 90vw;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* inner glow when content is displayed */
+    box-shadow: inset 0 0 40px rgba(200, 210, 220, 0.04);
+}
+
+/* large, prominent display — meant to be read at a glance in VR */
+#received-text {
+    font-size: 1.8rem;
+    color: var(--text);
+    text-align: center;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+    /* dim color and style for the waiting state */
+    font-style: italic;
+    text-shadow: 0 0 12px rgba(200, 210, 220, 0.4);
+}
+
+/* when text arrives, it should feel live — subtle glow on the text */
+#received-text:not(:empty) {
+    color: var(--accent);
+    text-shadow: var(--glow);
+    font-style: normal;
+}
