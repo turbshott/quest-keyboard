@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quest Keyboard - Sender</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 
 <!-- declare body with sender box -->
@@ -26,9 +26,13 @@
     ></textarea>
       <button id="clear-button">Clear</button>
     </div>
+    <div class="nav-bar">
+      <a href="/receiver" class="btn-nav">Switch to Receiver</a>
+      <a href="/logout" class="btn-nav">Logout</a>
+    </div>
 
     <!-- include socket logic -->
-    <script src="socket.js"></script>
+    <script src="/socket.js"></script>
     <!-- logic behind text input -->
     <script>
       // connect to websocket server

@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quest Keyboard - Receiver</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
@@ -18,9 +18,13 @@
     <div id="receiver-box">
       <p id="received-text"></p>
     </div>
+    <div class="nav-bar">
+        <a href="/sender" class="btn-nav">Switch to Sender</a>
+        <a href="/logout" class="btn-nav">Logout</a>
+    </div>
 
     <!-- include socket logic -->
-    <script src="socket.js"></script>
+    <script src="/socket.js"></script>
     <!-- logic to display received messages -->
     <script>
         const receivedText = document.getElementById('received-text');
