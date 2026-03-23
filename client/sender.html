@@ -23,6 +23,7 @@
         placeholder="Type something..."
         autocomplete="off"
       />
+      <button id="clear-button">Clear</button>
     </div>
 
     <!-- include socket logic -->
@@ -34,18 +35,36 @@
       
       // get reference to text input and listen for keyup events
       const input = document.getElementById('text-input');
-
       input.addEventListener('keyup', function () {
-        const message = input.value;
+        sendMessage(input.value);
+      });
+
+      // clear button logic
+      const clearButton = document.getElementById('clear-button');
+      clearButton.addEventListener('click', clearInput);
+
+      // listen for escape key to clear input
+      input.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+          clearInput();
+        }
+      });
+
+      // function to send message
+      function sendMessage(message) {
         if (socket.readyState === WebSocket.OPEN) {
           socket.send(message);
           console.log('Message', message, 'sent to server');
         } else {
           console.log('WebSocket is not open. Ready state:', socket.readyState);
         }
-      });
+      }
 
-      // TODO: clear input on focus to prevent stale messages
+      // clear input to prevent stale messages
+      function clearInput() {
+        input.value = '';
+        sendMessage(''); // send empty message to clear display on Quest
+      }
     </script>
 </body>
 </html>
