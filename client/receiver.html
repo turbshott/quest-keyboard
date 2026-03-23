@@ -16,7 +16,7 @@
     <h1>Quest Keyboard</h1>
 
     <div id="receiver-box">
-      <p id="received-text">Waiting for messages...</p>
+      <p id="received-text"></p>
     </div>
 
     <!-- include socket logic -->
@@ -24,10 +24,23 @@
     <!-- logic to display received messages -->
     <script>
         const receivedText = document.getElementById('received-text');
+
+        const waitingTimeout = setTimeout(function() {
+        if (receivedText.textContent === '') {
+            receivedText.classList.remove('fade-in');
+            // force browser to reflow so removing and adding the class is registered
+            void receivedText.offsetWidth;
+            receivedText.classList.add('fade-in');
+            receivedText.textContent = 'Waiting for messages...';
+        }
+        }, 500);
+
         connect( function(event) {
+            clearTimeout(waitingTimeout);
             if (event.data === '') {
-                receivedText.textContent = '';
+                receivedText.textContent = 'Waiting for messages...';
             } else {
+                receivedText.classList.remove('fade-in');
                 console.log('Message received from server:', event.data);
                 receivedText.textContent = event.data;
             }
