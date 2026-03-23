@@ -17,12 +17,12 @@
     <h1>Quest Keyboard</h1>
 
     <div id="sender-box">
-      <input
-        type="text"
-        id="text-input"
-        placeholder="Type something..."
-        autocomplete="off"
-      />
+      <textarea
+      id="text-input"
+      placeholder="Type something..."
+      autocomplete="off"
+      rows="1"
+    ></textarea>
       <button id="clear-button">Clear</button>
     </div>
 
@@ -35,7 +35,9 @@
       
       // get reference to text input and listen for keyup events
       const input = document.getElementById('text-input');
-      input.addEventListener('keyup', function () {
+      input.addEventListener('input', function () {
+        input.style.height = '0px';
+        input.style.height = input.scrollHeight + 'px';
         sendMessage(input.value);
       });
 
@@ -63,6 +65,8 @@
       // clear input to prevent stale messages
       function clearInput() {
         input.value = '';
+        input.style.height = '0px';
+        input.style.height = input.scrollHeight + 'px';
         sendMessage(''); // send empty message to clear display on Quest
       }
     </script>

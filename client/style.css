@@ -1,3 +1,6 @@
+/* font import */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 /* remove default browser spacing and set box model to include padding/border
    in element dimensions (makes layout math predictable) */
 *, *::before, *::after {
@@ -9,14 +12,14 @@
 /* CSS global variables */
 :root {
     --bg:           #090d14;        /* deep space background */
-    --surface:      #0f1623;        /* slightly lighter surface for cards */
-    --border:       #1e2d45;        /* subtle border color */
-    --accent:       #d0d8e4;        /* soft light grey */
-    --accent-dim:   #2a3040;        /* darker grey for borders */
-    --text:         #e0eaf5;        /* soft white — easier on eyes in VR */
-    --text-muted:   #4a6080;        /* secondary text */
-    --font:         'Courier New', Courier, monospace;  /* technical monospace */
-    --glow:         0 0 12px rgba(200, 210, 220, 0.25);  /* reusable glow effect */
+    --surface:      #1f2124;        /* slightly lighter surface for cards */
+    --border:       #424549;        /* subtle border color */
+    --accent:       #e0e1e4;        /* soft light grey */
+    --accent-dim:   #45474b;        /* darker grey for borders */
+    --text:         #f0f0f0;        /* soft white — easier on eyes in VR */
+    --text-muted:   #838588;        /* secondary text */
+    --font:         'Open Sans', sans-serif;  /* clean readable */
+    --glow:         0 0 12px rgba(221, 221, 221, 0.25);  /* reusable glow effect */
 }
 
 /* center everything on the page both vertically and horizontally.
@@ -31,24 +34,23 @@ body {
     align-items: center;
     justify-content: center;
     /* subtle radial gradient adds depth — brighter at center like a light source */
-    background-image: radial-gradient(ellipse at center, #0d1a2e 0%, var(--bg) 70%);
+    background-image: radial-gradient(ellipse at center, #1e2022 0%, var(--bg) 70%);
     }
 
 h1 {
-    font-size: 1.1rem;
-    font-weight: normal;
-    letter-spacing: 0.3em;          /* wide spacing feels technical/HUD-like */
-    text-transform: uppercase;
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
     color: var(--accent);
     text-shadow: var(--glow);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 /* The container that holds the input and clear button */
 #sender-box {
     display: flex;
     gap: 0.75rem;                   /* space between input and button */
-    align-items: center;
+    align-items: flex-end;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -66,9 +68,12 @@ h1 {
     color: var(--text);
     font-family: var(--font);
     font-size: 1.1rem;
+    letter-spacing: 0.03em;
     padding: 0.4rem 0;
     outline: none;
     caret-color: var(--accent);     /* cursor color matches accent */
+    resize: none;
+    overflow: hidden;
 }
 
 /* glow on the underline when the input is focused */
@@ -90,7 +95,7 @@ h1 {
     color: var(--text-muted);
     font-family: var(--font);
     font-size: 0.75rem;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     padding: 0.4rem 0.9rem;
     cursor: pointer;
