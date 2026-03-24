@@ -1,10 +1,7 @@
-<!-- declare html doc type -->
 <!DOCTYPE html>
-
-<!-- declare language -->
 <html lang="en">
 
-<!-- declare head, Claude assisted for character encoding and viewport settings -->
+<!-- declare head -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,6 +37,9 @@
       
       // get reference to text input and listen for keyup events
       const input = document.getElementById('text-input');
+
+      // send the current value on every keystroke.
+      // also resize the textarea to fit its content.
       input.addEventListener('input', function () {
         input.style.height = '0px';
         input.style.height = input.scrollHeight + 'px';
@@ -50,7 +50,7 @@
       const clearButton = document.getElementById('clear-button');
       clearButton.addEventListener('click', clearInput);
 
-      // listen for escape key to clear input
+      // escape key clears the input without reaching for the mouse.
       input.addEventListener('keydown', function (event) {
         if (event.key === 'Escape') {
           clearInput();
@@ -72,7 +72,8 @@
         input.value = '';
         input.style.height = '0px';
         input.style.height = input.scrollHeight + 'px';
-        sendMessage(''); // send empty message to clear display on Quest
+        // send an empty string so the receiver clears its display too.
+        sendMessage('');
       }
     </script>
 </body>

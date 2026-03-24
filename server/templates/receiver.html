@@ -1,10 +1,7 @@
-<!-- declare html doc type -->
 <!DOCTYPE html>
-
-<!-- declare language -->
 <html lang="en">
 
-<!-- declare head, Claude assisted for character encoding and viewport settings -->
+<!-- declare head -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,19 +26,24 @@
     <script>
         const receivedText = document.getElementById('received-text');
 
+        // if no message arrives within 500ms of page load, show the waiting state.
+        // the fade-in makes it feel intentional rather than a blank screen.
         const waitingTimeout = setTimeout(function() {
         if (receivedText.textContent === '') {
             receivedText.classList.remove('fade-in');
-            // force browser to reflow so removing and adding the class is registered
+            // reading offsetWidth forces the browser to reflow — without this,
+            // removing and immediately re-adding the class has no visible effect.
             void receivedText.offsetWidth;
             receivedText.classList.add('fade-in');
             receivedText.textContent = 'Waiting for messages...';
         }
         }, 500);
 
+        // cancel the waiting timeout if a message arrives before it fires.
         connect( function(event) {
             clearTimeout(waitingTimeout);
             if (event.data === '') {
+                // empty string means the sender cleared their input.
                 receivedText.textContent = 'Waiting for messages...';
             } else {
                 receivedText.classList.remove('fade-in');
