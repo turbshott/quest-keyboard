@@ -145,6 +145,8 @@ h1 {
     font-style: normal;
 }
 
+/* fade-in animation used on the receiver's "waiting" text so it
+   doesn't flash immediately on page load */
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
