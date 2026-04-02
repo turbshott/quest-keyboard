@@ -1,80 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<!-- declare head -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quest Keyboard - Sender</title>
     <link rel="stylesheet" href="/style.css">
 </head>
-
-<!-- declare body with sender box -->
 <body>
     <h1>Quest Keyboard</h1>
 
     <div id="sender-box">
-      <textarea
-      id="text-input"
-      placeholder="Type something..."
-      autocomplete="off"
-      autocorrect="on"
-      rows="1"
-    ></textarea>
-      <button id="clear-button">Clear</button>
+        <textarea
+            id="text-input"
+            placeholder="Type something..."
+            autocomplete="off"
+            autocorrect="on"
+            rows="1"
+        ></textarea>
+        <button id="clear-button">Clear</button>
     </div>
     <div class="nav-bar">
-      <a href="/receiver" class="btn-nav">Switch to Receiver</a>
-      <a href="/logout" class="btn-nav">Logout</a>
+        <a href="/receiver" class="btn-nav">Switch to Receiver</a>
+        <a href="/logout" class="btn-nav">Logout</a>
     </div>
 
-    <!-- include socket logic -->
     <script src="/socket.js"></script>
-    <!-- logic behind text input -->
     <script>
-      // connect to websocket server
-      connect();
-      
-      // get reference to text input and listen for keyup events
-      const input = document.getElementById('text-input');
+        connect();
 
-      // send the current value on every keystroke.
-      // also resize the textarea to fit its content.
-      input.addEventListener('input', function () {
-        input.style.height = '0px';
-        input.style.height = input.scrollHeight + 'px';
-        sendMessage(input.value);
-      });
+        const input = document.getElementById('text-input');
 
-      // clear button logic
-      const clearButton = document.getElementById('clear-button');
-      clearButton.addEventListener('click', clearInput);
+        // auto-grow the textarea and send on every keystroke
+        input.addEventListener('input', function() {
+            input.style.height = '0px';
+            input.style.height = input.scrollHeight + 'px';
+            sendMessage(input.value);
+        });
 
-      // escape key clears the input without reaching for the mouse.
-      input.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
-          clearInput();
+        document.getElementById('clear-button').addEventListener('click', clearInput);
+
+        // escape key clears the input without reaching for the button
+        input.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') clearInput();
+        });
+
+        function sendMessage(message) {
+            if (socket.readyState === WebSocket.OPEN) {
+                socket.send(message);
+            } else {
+                console.log('WebSocket not open. Ready state:', socket.readyState);
+            }
         }
-      });
 
-      // function to send message
-      function sendMessage(message) {
-        if (socket.readyState === WebSocket.OPEN) {
-          socket.send(message);
-          console.log('Message', message, 'sent to server');
-        } else {
-          console.log('WebSocket is not open. Ready state:', socket.readyState);
+        // reset the textarea and tell the receiver to clear its display
+        function clearInput() {
+            input.value = '';
+            input.style.height = '0px';
+            input.style.height = input.scrollHeight + 'px';
+            sendMessage('');
         }
-      }
-
-      // clear input to prevent stale messages
-      function clearInput() {
-        input.value = '';
-        input.style.height = '0px';
-        input.style.height = input.scrollHeight + 'px';
-        // send an empty string so the receiver clears its display too.
-        sendMessage('');
-      }
     </script>
 </body>
 </html>

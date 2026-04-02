@@ -1,53 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<!-- declare head -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quest Keyboard - Receiver</title>
     <link rel="stylesheet" href="/style.css">
 </head>
-
 <body>
     <h1>Quest Keyboard</h1>
 
     <div id="receiver-box">
-      <p id="received-text"></p>
+        <p id="received-text"></p>
     </div>
     <div class="nav-bar">
         <a href="/sender" class="btn-nav">Switch to Sender</a>
         <a href="/logout" class="btn-nav">Logout</a>
     </div>
 
-    <!-- include socket logic -->
     <script src="/socket.js"></script>
-    <!-- logic to display received messages -->
     <script>
         const receivedText = document.getElementById('received-text');
 
-        // if no message arrives within 500ms of page load, show the waiting state.
-        // the fade-in makes it feel intentional rather than a blank screen.
+        // if no message arrives within 500ms of page load, show a waiting state.
+        // the timeout is cancelled immediately if a message comes in first.
         const waitingTimeout = setTimeout(function() {
-        if (receivedText.textContent === '') {
-            receivedText.classList.remove('fade-in');
-            // reading offsetWidth forces the browser to reflow — without this,
-            // removing and immediately re-adding the class has no visible effect.
-            void receivedText.offsetWidth;
-            receivedText.classList.add('fade-in');
-            receivedText.textContent = 'Waiting for messages...';
-        }
+            if (receivedText.textContent === '') {
+                receivedText.classList.remove('fade-in');
+                void receivedText.offsetWidth; // force reflow so the animation re-triggers
+                receivedText.classList.add('fade-in');
+                receivedText.textContent = 'Waiting for messages...';
+            }
         }, 500);
 
-        // cancel the waiting timeout if a message arrives before it fires.
-        connect( function(event) {
+        connect(function(event) {
             clearTimeout(waitingTimeout);
             if (event.data === '') {
-                // empty string means the sender cleared their input.
+                // empty string means the sender cleared their input
                 receivedText.textContent = 'Waiting for messages...';
             } else {
                 receivedText.classList.remove('fade-in');
-                console.log('Message received from server:', event.data);
                 receivedText.textContent = event.data;
             }
         });
